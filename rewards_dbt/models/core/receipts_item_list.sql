@@ -1,3 +1,5 @@
+-- The purpose of this model is to flatten out the rewards_receipt_item_list JSON
+-- column from the receipts model. Many column values are null.
 {{ config(materialized='table') }}
 
 with flattened_receipts as (

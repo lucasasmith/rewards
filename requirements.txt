@@ -1,3 +1,9 @@
 dbt-core
 dbt-duckdb
 duckdb
+# The following packages are for querying DuckDB in a notebook.
+jupysql
+pandas
+matplotlib
+duckdb-engine
+ipykernel
