@@ -1,0 +1,24 @@
+
+version: 2
+
+sources:
+  - name: rewards_raw
+    database: rewards_db
+    schema: raw
+    tables:
+      - name: users
+      - name: brands
+      - name: receipts
+
+models:
+  - name: users
+    description: "Rewards users."
+    # columns:
+    #   - name: id
+    #     description: "The primary key for this table"
+    #     data_tests:
+    #       - unique
+    #       - not_null
+
+  - name: brands
+    description: "Rewards brands."
