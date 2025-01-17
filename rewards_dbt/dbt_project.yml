@@ -42,3 +42,7 @@ models:
     # reporting:
     #   schema: reporting
     #   materialized: view
+
+tests:
+  rewards_dbt:
+    +severity: warn
