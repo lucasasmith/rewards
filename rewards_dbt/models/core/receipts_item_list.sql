@@ -12,18 +12,18 @@ with flattened_receipts as (
 
   select
     receipt_id,
-    items."barcode", -- varchar
+    try_cast(items."barcode" as bigint) as barcode, -- This will invalidate barcodes like B076FJ92M4
     items."brandCode" as brand_code,
     items."competitorRewardsGroup" as competitor_rewards_group,
-    items."competitiveProduct" as is_competitive_product, -- bool
-    items."description", -- varchar
-    try_cast(items."discountedItemPrice" as numeric(18,2)) as discounted_item_price, -- numeric
-    items."finalPrice" as final_price, -- numeric
-    items."itemNumber" as item_number, -- varchar
-    items."itemPrice" as item_price, -- numeric
-    items."needsFetchReview" as needs_fetch_review, -- bool
-    items."needsFetchReviewReason" as needs_fetch_review_reason, -- varchar
-    items."originalFinalPrice" as original_final_price, -- numeric
+    items."competitiveProduct" as is_competitive_product,
+    items."description",
+    try_cast(items."discountedItemPrice" as numeric(18,2)) as discounted_item_price,
+    try_cast(items."finalPrice" as numeric(18,2)) as final_price,
+    items."itemNumber" as item_number,
+    try_cast(items."itemPrice" as numeric(18,2)) as item_price,
+    items."needsFetchReview" as needs_fetch_review,
+    items."needsFetchReviewReason" as needs_fetch_review_reason,
+    try_cast(items."originalFinalPrice" as numeric(18,2)) as original_final_price,
     items."originalMetaBriteBarcode" as original_metabrite_barcode,
     items."metabriteCampaignId" as metabrite_campaign_id,
     items."originalMetaBriteDescription" as original_metabrite_description,
@@ -39,12 +39,13 @@ with flattened_receipts as (
     items."quantityPurchased" as quantity_purchased,
     items."rewardsGroup" as rewards_group,
     items."rewardsProductPartnerId" as rewards_product_partner_id,
-    items."targetPrice" as target_price,
-    items."userFlaggedBarcode" as user_flagged_barcode, -- varchar
-    items."userFlaggedDescription" as user_flagged_description, -- varchar
+    try_cast(items."targetPrice" as numeric(18,2)) as target_price,
+    try_cast(items."userFlaggedBarcode" as bigint) as user_flagged_barcode,
+    items."userFlaggedDescription" as user_flagged_description,
     items."userFlaggedNewItem"::boolean as is_user_flagged_new_item,
-    items."userFlaggedPrice" as user_flagged_price,
-    items."userFlaggedQuantity" as user_flagged_quantity,
-    items."deleted"::boolean as is_deleted
+    try_cast(items."userFlaggedPrice" as numeric(18,2)) as user_flagged_price,
+    items."userFlaggedQuantity" as user_flagged_quantity
 from
     flattened_receipts
+where
+    coalesce(items."deleted"::boolean, False) != True

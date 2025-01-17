@@ -2,13 +2,13 @@ rewards_dbt:
   outputs:
     dev:
       type: duckdb
-      path: /Users/lucassmith/Documents/code/rewards/rewards_dbt/rewards_db.duckdb
+      path: ~/Documents/code/rewards/rewards_dbt/rewards_db.duckdb
       threads: 4
       schema: dev
 
     prod:
       type: duckdb
-      path: /Users/lucassmith/Documents/code/rewards/rewards_dbt/rewards_db.duckdb
+      path: ~/Documents/code/rewards/rewards_dbt/rewards_db.duckdb
       threads: 4
 
   target: prod
