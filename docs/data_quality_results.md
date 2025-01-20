@@ -1,5 +1,5 @@
 ## Data Quality Results
-Data quality issues can be found by running `dbt test`. This command runs the data tests setup in the `core.yml` file and utilize the data quality testing features of dbt. In a production environment, most if not all these tests would be set to fail a pipeline. In this scenario, they are set to warn. Sometimes the output of these tests inside the dbt CLI aren't the easiest to understand. Possible helpful solutions to this would be calling them with a Python script that would allow for much more custom logging or using a 3rd party tool to help format and track failures.
+Data quality issues can be found by running `dbt test`. This command runs the data tests setup in the `core.yml` file and utilize the data quality testing features of dbt. In a production environment, most if not all these tests would be set to fail a pipeline. As currently configured, they are set to warn. Sometimes the output of these tests inside the dbt CLI aren't the easiest to understand. Possible helpful solutions to this would be calling them with a Python script that would allow for much more custom logging or using a 3rd party tool to help format and track failures over time.
 
 See the `core.yml` file and the `data_tests` for more information on each data quality test.
 

@@ -3,7 +3,7 @@ version: 2
 
 sources:
   - name: rewards_raw
-    database: rewards_db
+    database: rewards
     schema: raw
     tables:
       - name: users
@@ -76,6 +76,7 @@ models:
         # Referential test back to the users model to check if user id exists. In theory,
         # we shouldn't have any receipts that don't belong to an existing user_id.
         data_tests:
+          - not_null
           - relationships:
               to: ref('user')
               field: user_id
