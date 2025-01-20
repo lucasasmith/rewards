@@ -6,6 +6,8 @@
 .env
 **/profiles.yml
 .vscode/
+**/.user.yml
+logs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
