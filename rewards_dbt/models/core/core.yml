@@ -11,28 +11,30 @@ sources:
       - name: receipts
 
 models:
-  - name: users
+  - name: user
     description: "Rewards users."
     data_tests:
     # Check if last login is before created date.
     - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
-        column_A: last_login
+        column_A: last_login_date
         column_B: created_date
     columns:
-      - name: id
+      - name: user_id
         description: "The id for a user"
         data_tests:
+          # Perform primary key check.
           - unique
           - not_null
       - name: created_date
         description: "The creation date for a user"
 
-  - name: brands
+  - name: brand
     description: "Rewards brands"
     columns:
-      - name: id
+      - name: brand_id
         description: "The id for a brand"
         data_tests:
+          # Perform primary key check.
           - unique
           - not_null
       - name: brand_code
@@ -52,20 +54,21 @@ models:
       - name: barcode
         description: "The barcode for a brand"
         data_tests:
-        # Check if any barcodes aren't unique. This may or may not be an issue.
+        # Check if any barcodes aren't unique. This may or may not be an issue so a discussion with the business is needed.
           - unique
           - not_null
 
-  - name: receipts
+  - name: receipt
     data_tests:
     # Check if receipt finished date is greater than create date.
     - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
         column_A: finished_date
-        column_B: create_date
+        column_B: created_date
     columns:
-      - name: id
+      - name: receipt_id
         description: "The id for a receipt"
         data_tests:
+          # Perform primary key check.
           - unique
           - not_null
       - name: user_id
@@ -74,8 +77,8 @@ models:
         # we shouldn't have any receipts that don't belong to an existing user_id.
         data_tests:
           - relationships:
-              to: ref('users')
-              field: id
+              to: ref('user')
+              field: user_id
       - name: points_earned
         description: "The value of points earned with the receipt."
         data_tests:
@@ -83,7 +86,7 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
               max_value: 5000
-      - name: purchase_item_count
+      - name: purchased_item_count
         description: "The number of items the receipt."
         data_tests:
           # Test if the number of points earned is in a common sense range. This may or may not be necessary.
@@ -91,23 +94,27 @@ models:
               min_value: 1 # Should a receipt have less than 1 items?
               max_value: 100 # Should a receipt have more than 100 items?
 
-  - name: receipts_item_list
+  - name: receipt_item_list
     columns:
       - name: receipt_id
         description: "The id for a receipt"
         data_tests:
-          - not_null # unique not added since the receipt can contain many items.
+          - not_null # unique test not added since the receipt can contain many items.
+          # Ensure the receipt_id exists in the receipt table.
+          - relationships:
+              to: ref('receipt')
+              field: receipt_id
       - name: barcode
         description: "The barcode of the receipt item."
-        # Find if any names have the value of test/TEST in the string.
         data_tests:
+          # Find if any barcodes have a value of 4011 since this may be a quality issue in the system.
           - dbt_expectations.expect_column_values_to_not_be_in_set:
               value_set: [4011]
               quote_values: false
       - name: description
-        description: "The description of the item. Very meta here."
-        # Find if any names have the value of test/TEST in the string.
+        description: "The description of the item."
         data_tests:
+        # Find if any values are not found since this may be a quality issue.
           - dbt_expectations.expect_column_values_to_not_be_in_set:
               value_set: ['ITEM NOT FOUND']
               quote_values: true

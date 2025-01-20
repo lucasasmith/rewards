@@ -7,7 +7,7 @@ with flattened_receipts as (
         receipt_id,
         unnest(rewards_receipt_item_list) as items
     from
-        {{ ref('receipts') }}
+        {{ ref('receipt') }}
 )
 
   select
