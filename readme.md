@@ -1,8 +1,9 @@
 [DuckDB SQL](https://duckdb.org/docs/sql/introduction) is used for all queries and models.
+NOTE: All commands listed below are tested on MacOS. Other systems may need edits.
 
 ## Setup
 - Clone the repo to your local filesystem and take note of the path.
-- Install uv.
+- Install [uv](https://github.com/astral-sh/uv).
 - Create venv with `uv venv --python 3.13` and activate.
 - Run `uv pip install -r requirements.txt`.
 - In VS Code, navigate to Extensions and install the Jupyter extensions (ones published by Microsoft).
@@ -13,6 +14,7 @@
   - This should create two schemas (`raw` and `core`) and three raw tables (`raw.users`, `raw.brands`, `raw.receipts`).
   - Summary stats for each tables should also be printed out.
 - If the Python script doesn't work, the following commands can be run manually:
+  - In terminal, open the DuckDB file with `duckdb rewards.db`.
 ```sql
 create or replace schema raw;
 
@@ -31,7 +33,7 @@ dbt
 - Run `cd rewards_dbt`.
 - Run `dbt deps`.
 - Navigate to the `rewards_dbt` dir and create a new file named `profiles.yml`.
-- Add the following to the file only changing the specific location of your repo directory.
+- Add the following to the file only changing the specific location of your cloned srepo directory.
   - NOTE: the path location will vary depending on OS.
 ```yml
 rewards_dbt:
@@ -51,3 +53,8 @@ rewards_dbt:
 NOTE: If an `IO Error: Could not set lock on file` error appears, close the process/notebook that is currently utilizing the DuckDB database. Only one process can manipulate the file at a time.
 
 NOTE: If an error similar to `There appear to be 4 leaked semaphore objects to clean up at shutdown` is encountered, kill all running processes/restart IDE to ensure the DuckDB file is in a stable state.
+
+
+## Outputs and Data Analysis
+- A data analysis notebook can be found in the `/queries/` dir. This notebook answers business questions about spend amounts and transactions. It can be viewed as is, or rerun after the DuckDB/dbt installs and config are complete.
+- A relational diagram and message to a stakeholder can be found in the `/docs/` dir (along with some other notes).
