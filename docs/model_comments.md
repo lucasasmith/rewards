@@ -1,0 +1,1 @@
+The ERD is drawn as more of an ideal state than the actual existing state. For example, the `barcode` and `brand_code` values in the `receipt_item_list` model often aren't a match with the `brand` table.
